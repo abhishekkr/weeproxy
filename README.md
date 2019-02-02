@@ -44,3 +44,21 @@ curl localhost:8080/google
 * port to listen at can be modified updating `listen-at` field in above config
 
 ---
+
+#### ToDo
+
+* graceful stop/restart
+
+* performance metrics
+
+* configurable header customization
+
+* better no-backend handling
+
+* rate-limiting
+
+* circuit breaker
+
+* runtime authenticated config updates over admin api
+
+---
