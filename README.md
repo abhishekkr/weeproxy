@@ -3,6 +3,11 @@
 
 WeeProxy is a wee bit http proxy to access http services mapped over URL path.
 
+* HTTP Proxy based on URL path mapped to Backends
+
+* graceful stop/restart
+
+
 #### Quikstart
 
 * start server
@@ -46,8 +51,6 @@ curl localhost:8080/google
 ---
 
 #### ToDo
-
-* graceful stop/restart
 
 * performance metrics
 

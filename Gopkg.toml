@@ -29,6 +29,10 @@
   branch = "master"
   name = "github.com/abhishekkr/gol"
 
+[[constraint]]
+  branch = "master"
+  name = "github.com/pseidemann/finish"
+
 [prune]
   go-tests = true
   unused-packages = true

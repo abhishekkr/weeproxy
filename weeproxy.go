@@ -13,6 +13,7 @@ import (
 
 	golconfig "github.com/abhishekkr/gol/golconfig"
 	golenv "github.com/abhishekkr/gol/golenv"
+	"github.com/pseidemann/finish"
 )
 
 var (
@@ -74,7 +75,18 @@ func main() {
 	}
 
 	http.HandleFunc("/", handleProxy)
-	if err := http.ListenAndServe(ListenAt, nil); err != nil {
-		panic(err)
-	}
+
+	srv := &http.Server{Addr: ListenAt}
+
+	fin := finish.New()
+	fin.Add(srv)
+
+	go func() {
+		err := srv.ListenAndServe()
+		if err != http.ErrServerClosed {
+			log.Fatal(err)
+		}
+	}()
+
+	fin.Wait()
 }
