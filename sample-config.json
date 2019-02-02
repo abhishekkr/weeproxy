@@ -1,0 +1,9 @@
+{
+  "server": {
+    "listen-at": ":8080"
+  },
+  "url-proxy": {
+    "/google": "http://www.google.com"
+  }
+}
+
