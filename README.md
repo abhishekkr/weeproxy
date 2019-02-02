@@ -7,6 +7,8 @@ WeeProxy is a wee bit http proxy to access http services mapped over URL path.
 
 * graceful stop/restart
 
+* prometheus performance metrics at `/metrics`
+
 
 #### Quikstart
 
@@ -51,8 +53,6 @@ curl localhost:8080/google
 ---
 
 #### ToDo
-
-* performance metrics
 
 * configurable header customization
 

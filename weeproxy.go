@@ -13,6 +13,7 @@ import (
 
 	golconfig "github.com/abhishekkr/gol/golconfig"
 	golenv "github.com/abhishekkr/gol/golenv"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/pseidemann/finish"
 )
 
@@ -74,6 +75,7 @@ func main() {
 		log.Printf("+ %s => %s", urlpath, proxy)
 	}
 
+	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/", handleProxy)
 
 	srv := &http.Server{Addr: ListenAt}
