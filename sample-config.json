@@ -3,7 +3,9 @@
     "listen-at": ":8080"
   },
   "url-proxy": {
-    "/google": "http://www.google.com"
+    "/l1": "http://127.0.0.1:7001",
+    "/local": "http://127.0.0.1:7001 http://127.0.0.1:7002 http://127.0.0.1:7003",
+    "/google": "http://www.google.com http://www.google.in"
   }
 }
 

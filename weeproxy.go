@@ -10,26 +10,29 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 
 	golconfig "github.com/abhishekkr/gol/golconfig"
 	golenv "github.com/abhishekkr/gol/golenv"
+	gollb "github.com/abhishekkr/gol/gollb"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/pseidemann/finish"
 )
 
 var (
-	ConfigJson = golenv.OverrideIfEnv("WEEPROXY_CONFIG", "sample-config.json")
+	ConfigJson  = golenv.OverrideIfEnv("WEEPROXY_CONFIG", "sample-config.json")
+	LbSeparator = golenv.OverrideIfEnv("WEEPROXY_LB_SEPARATOR", " ")
 
 	ListenAt    string
-	UrlProxyMap map[string]string
+	UrlProxyMap gollb.RoundRobin
 )
 
 func getBackend(proxyConditionRaw string) string {
-	return UrlProxyMap[proxyConditionRaw]
+	return UrlProxyMap.GetBackend(proxyConditionRaw)
 }
 
 func logRequest(urlpath string, proxyUrl string) {
-	log.Printf("proxy_condition: %s, proxy_url: %s\n", urlpath, proxyUrl)
+	log.Printf("proxy/condition: %s, proxy/url: %s\n", urlpath, proxyUrl)
 }
 
 func reverseProxy(target string, res http.ResponseWriter, req *http.Request) {
@@ -64,16 +67,17 @@ func loadConfig() {
 	jsonCfg := golconfig.GetConfigurator("json")
 	jsonCfg.Unmarshal(string(configfile), &config)
 
+	for urlpath, proxy := range config["url-proxy"] {
+		log.Printf("+ %s => %s", urlpath, strings.Split(proxy, LbSeparator))
+	}
+
 	ListenAt = config["server"]["listen-at"]
-	UrlProxyMap = config["url-proxy"]
+	UrlProxyMap.LoadWithSeparator(config["url-proxy"], LbSeparator)
 }
 
 func main() {
 	loadConfig()
 	log.Printf("listening at: %s\n", ListenAt)
-	for urlpath, proxy := range UrlProxyMap {
-		log.Printf("+ %s => %s", urlpath, proxy)
-	}
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/", handleProxy)
