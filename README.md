@@ -11,6 +11,8 @@ WeeProxy is a wee bit http proxy to access http services mapped over URL path.
 
 * prometheus performance metrics at `/metrics`
 
+* configurable header customization
+
 
 #### Quikstart
 
@@ -46,7 +48,10 @@ curl localhost:8080/google
   "url-proxy": {
     "/google": "http://www.google.com http://www.google.in",
    ....more
-  }
+  },
+  "custom-headers": {
+    "X-Proxy-By": "WeeProxy"
+   }
 }
 ```
 
@@ -59,8 +64,6 @@ curl localhost:8080/google
 ---
 
 #### ToDo
-
-* configurable header customization
 
 * better no-backend handling
 

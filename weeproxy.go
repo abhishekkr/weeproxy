@@ -23,17 +23,10 @@ var (
 	ConfigJson  = golenv.OverrideIfEnv("WEEPROXY_CONFIG", "sample-config.json")
 	LbSeparator = golenv.OverrideIfEnv("WEEPROXY_LB_SEPARATOR", " ")
 
-	ListenAt    string
-	UrlProxyMap gollb.RoundRobin
+	ListenAt      string
+	UrlProxyMap   gollb.RoundRobin
+	CustomHeaders map[string]string
 )
-
-func getBackend(proxyConditionRaw string) string {
-	return UrlProxyMap.GetBackend(proxyConditionRaw)
-}
-
-func logRequest(urlpath string, proxyUrl string) {
-	log.Printf("proxy/condition: %s, proxy/url: %s\n", urlpath, proxyUrl)
-}
 
 func reverseProxy(target string, res http.ResponseWriter, req *http.Request) {
 	url, _ := url.Parse(target)
@@ -49,10 +42,13 @@ func reverseProxy(target string, res http.ResponseWriter, req *http.Request) {
 }
 
 func handleProxy(res http.ResponseWriter, req *http.Request) {
-	url := getBackend(req.URL.Path)
+	url := UrlProxyMap.GetBackend(req.URL.Path)
 
 	if url != "" {
-		logRequest(req.URL.Path, url)
+		log.Printf("proxy/condition: %s, proxy/url: %s\n", req.URL.Path, url)
+		for headerKey, headerVal := range CustomHeaders {
+			req.Header[headerKey] = []string{headerVal}
+		}
 		reverseProxy(url, res, req)
 	}
 }
@@ -73,6 +69,7 @@ func loadConfig() {
 
 	ListenAt = config["server"]["listen-at"]
 	UrlProxyMap.LoadWithSeparator(config["url-proxy"], LbSeparator)
+	CustomHeaders = config["custom-headers"]
 }
 
 func main() {
