@@ -9,6 +9,10 @@
   },
   "custom-headers": {
     "X-Proxy-By": "WeeProxy"
+  },
+  "sanity": {
+    "max-errors-per-sec": "10",
+    "max-request-per-sec": "7000"
   }
 }
 

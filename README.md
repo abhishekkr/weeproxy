@@ -13,6 +13,10 @@ WeeProxy is a wee bit http proxy to access http services mapped over URL path.
 
 * configurable header customization
 
+* rate-limiting (same config for all backends)
+
+* circuit breaker (same config for all backends)
+
 
 #### Quikstart
 
@@ -50,7 +54,11 @@ curl localhost:8080/google
    ....more
   },
   "custom-headers": {
-    "X-Proxy-By": "WeeProxy"
+    "X-Proxy-By": "WeeProxy"        // custom response headers for each response
+  },
+  "sanity": {
+    "max-errors-per-sec": "10",     // per backend max errors allowed before ban
+    "max-request-per-sec": "7000"   // per backend max requests allowed before ban
    }
 }
 ```
@@ -67,10 +75,10 @@ curl localhost:8080/google
 
 * better no-backend handling
 
-* rate-limiting
-
-* circuit breaker
-
 * runtime authenticated config updates over admin api
+
+* rate-limiting (per backend config)
+
+* circuit breaker (per backend config)
 
 ---
