@@ -28,7 +28,7 @@ dep ensure
 go run weeproxy.go
 ```
 
-* can also be used by downloaded pre-compiled binary from [latest release](https://github.com/abhishekkr/weeproxy/releases/tag/v0.3.0), remember to have [sample config](./sample-config.json) in same dir or set required env var
+* can also be used by downloaded pre-compiled binary from [latest release](https://github.com/abhishekkr/weeproxy/releases/latest), remember to have [sample config](./sample-config.json) in same dir or set required env var
 
 * check http
 
