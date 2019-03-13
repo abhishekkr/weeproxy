@@ -1,6 +1,8 @@
 
 ## WeeProxy
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/abhishekkr/weeproxy)](https://goreportcard.com/report/github.com/abhishekkr/weeproxy)
+
 WeeProxy is a wee bit http proxy to access http services mapped over URL path.
 
 * HTTP Proxy based on URL path mapped to Backends
